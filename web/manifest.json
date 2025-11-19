@@ -1,6 +1,6 @@
 {
-    "name": "we_shop",
-    "short_name": "we_shop",
+    "name": "flutter_shop",
+    "short_name": "flutter_shop",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
