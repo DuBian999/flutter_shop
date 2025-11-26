@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop/api/index.dart';
 import 'package:flutter_shop/pages/Index/components/home_category.dart';
 import 'package:flutter_shop/pages/Index/components/home_slider.dart';
 import 'package:flutter_shop/pages/Index/components/hot.dart';
@@ -14,38 +15,35 @@ class IndexView extends StatefulWidget {
 }
 
 class _IndexViewState extends State<IndexView> {
+  List<BannerItem> bannerList = [];
+  List<CategoryItem> categoryList = [];
+
+  Future<void> getBannerList() async {
+    final res = await getBannerListApi();
+    bannerList = res;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getBannerList();
+    getCategoryList();
+  }
+
+  Future<void> getCategoryList() async {
+    final res = await getCategoryListApi();
+    categoryList = res;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        SliverToBoxAdapter(
-          child: HomeSlider(
-            bannerList: [
-              BannerItem(
-                id: '1',
-                imgUrl:
-                    'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/1.jpg',
-              ),
-              BannerItem(
-                id: '2',
-                imgUrl:
-                    'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/2.png',
-              ),
-              BannerItem(
-                id: '1',
-                imgUrl:
-                    'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/1.jpg',
-              ),
-              BannerItem(
-                id: '2',
-                imgUrl:
-                    'https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/2.png',
-              ),
-            ],
-          ),
-        ),
+        SliverToBoxAdapter(child: HomeSlider(bannerList: bannerList)),
         SliverToBoxAdapter(child: SizedBox(height: 10)),
-        SliverToBoxAdapter(child: HomeCategory()),
+        SliverToBoxAdapter(child: HomeCategory(categoryList: categoryList)),
         SliverToBoxAdapter(child: SizedBox(height: 10)),
         SliverToBoxAdapter(child: Suggestion()),
         SliverToBoxAdapter(child: SizedBox(height: 10)),
